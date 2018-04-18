@@ -232,7 +232,7 @@ curl -X POST \
   -H 'owner-key: my-owner-key' \
   -d '{
         "id": "123-456-789",
-        {
+        "object": {
           "firstname": "John",
           "lastname": "Doe"
         }
@@ -253,7 +253,7 @@ De payload blijft ongewijzigd:
 ```json
 {
   "id": "123-456-789",
-  {
+  "object": {
     "firstname": "John",
     "lastname": "Doe"
   }
