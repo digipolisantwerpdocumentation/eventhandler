@@ -219,3 +219,43 @@ Een andere optie is om in het bericht zelf een "sequenceId" of "timeStamp" te vo
   }
 }
 ```
+
+# Voorbeeld
+In dit uitgewerkt voorbeeld beschrijven we de flow van een event vanaf de publisher tot aan de subscriber. 
+
+De publisher publiceert een event “_dummy.test_” op de namespace “_dummy.testeventhandler_”. Dit kan gebeuren via volgende REST call:
+
+```
+curl -X POST \
+  https://api-gw-o.antwerpen.be/acpaas/eventhandler/v2/namespaces/dummy.testeventhandler/topics/dummy.test/publish \
+  -H 'apikey: my-api-key' \
+  -H 'owner-key: my-owner-key' \
+  -d '{
+        "id": "123-456-789",
+        {
+          "firstname": "John",
+          "lastname": "Doe"
+        }
+      }'
+```
+Op dit event is er een subscriber geabonneerd die dan volgende bericht doorgestuurd krijgt van de eventhandler via een POST method.
+
+De eventhandler zal het bericht van de publisher verrijken met volgende extra headers:
+
+```
+Evha-Correlation-Id: 9e99664e-efef-427f-a7e2-3d449b8cb7c1
+Evha-Topic: dummy.test
+Evha-Namespace: dummy.testeventhandler
+```
+
+De payload blijft ongewijzigd:
+
+```json
+{
+  "id": "123-456-789",
+  {
+    "firstname": "John",
+    "lastname": "Doe"
+  }
+}
+```
