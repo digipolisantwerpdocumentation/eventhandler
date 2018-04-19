@@ -23,6 +23,7 @@
     - [First level: Error Queue](#first-level-error-queue)
     - [First level: Stop](#first-level-stop)
     - [Second level: Success, error, delete](#second-level-success-error-delete)
+- [Voorbeeld](#voorbeeld)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
