@@ -4,26 +4,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Document historiek](#document-historiek)
-- [Introductie](#introductie)
-- [Links](#links)
-- [Publish](#publish)
-  - [Create namespace](#create-namespace)
-  - [Create topic](#create-topic)
-  - [Packages](#packages)
-  - [Omgaan met onbeschikbaarheden](#omgaan-met-onbeschikbaarheden)
-- [Subscribe](#subscribe)
-  - [Create subscription](#create-subscription)
-    - [Topic subscription](#topic-subscription)
-    - [Wildcard subscription](#wildcard-subscription)
-  - [Volgorde van berichten](#volgorde-van-berichten)
-  - [Retries strategies](#retries-strategies)
-    - [First level: Success](#first-level-success)
-    - [First level: Delete](#first-level-delete)
-    - [First level: Error Queue](#first-level-error-queue)
-    - [First level: Stop](#first-level-stop)
-    - [Second level: Success, error, delete](#second-level-success-error-delete)
-- [Voorbeeld](#voorbeeld)
+
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -37,7 +18,7 @@ Versie   | Auteur                 | Datum      | Opmerkingen
 
 De eventhandler is een ACPAAS component die gebruikt wordt om berichten te publiceren waarop verschillende afnemers kunnen subscriben. 
 
-De eventhandler is een abstractielaag voor pub/sub dat momenteel gebruik maakt van RabbitMQ en MongoDB en volledig werkt op basis van http voor het versturen van de berichten.
+De eventhandler is een abstractielaag voor pub/sub die volledig werkt op basis van http voor het afleveren van de berichten.
 
 Het verschil met "traditionele pub/sub" systemen is dat de eventhandler de berichten pusht over http.
 
@@ -57,17 +38,17 @@ Het verschil met "traditionele pub/sub" systemen is dat de eventhandler de beric
 
 In de EventHandler UI of via de admin API kan je voor de berichten die je wil publishen een namespace(project) en topics(type berichten) aanmaken.
 
-## Create namespace
+## Creatie namespace
 ![](img/publish_namespace.png)
 
-## Create topic
+## Creatie topic
 ![](img/publish_topic.png)
 
 ## Packages
 **NodeJS**
 * https://bitbucket.antwerpen.be/projects/NPM/repos/digipolis-event_npm_nodejs/browse
 
-**dotnet**
+**dotnet core**
 * https://github.com/digipolisantwerp/dataaccess-eventhandler_aspnetcore
 * https://github.com/digipolisantwerp/eventhandler_aspnetcore
 https://www.hangfire.io
@@ -77,16 +58,16 @@ https://www.hangfire.io
 
 Hoewel de EventHandler high available is opgezet kan je ervan uitgaan dat deze (net zoals iedere andere dependency) op een gegeven moment niet beschikbaar zal zijn voor uw applicatie.
 
-Hierdoor raden we aan om ook met een interne queue/tabel te werken binnen de applicatie zodat er geen inconsistenties ontstaan tussen de data uit de verschillende systemen.
+Daarom raden we aan om ook met een interne queue/tabel te werken binnen de applicatie zodat er geen inconsistenties ontstaan tussen de data uit de verschillende systemen.
 
 
 # Subscribe
 
-## Create subscription
+## Creatie subscription
 
 ![](img/publish_subscription.png)
 
-Voor iedere subscription kan je onderstaande zaken instellen:
+Voor iedere subscription kan je onderstaande parameters instellen:
 * naam
 * endpoint
 * authenticatie
@@ -130,18 +111,16 @@ Alle matches komen sequentieel op 1 queue terecht voor de subscriber en zullen v
 
 Als het belangrijk is om de volgorde te respecteren bij het afleveren van de berichten kan je gebruik maken van EventHandler functionaleit of dit in de subscriber zelf verwerken.
 
-Via de **EventHandler** kan je dit bekomen door de subscription te configureren om maximum 1 bericht parallel door te sturen en de subscription te stoppen als er 1 bericht faalt. Afhankelijk van throughput van de subscriber kan dit al snel een bottleneck worden. De EventHandler past het principe van "best effort" naar volgorde toe. Dit wil zeggen dat er onder uitzonderlijke omstandigheden(failover) 2 berichten tegelijk gestuurd kunnen worden en de volgorde dus verloren gaat.
+Via de **EventHandler** kan je dit bekomen door de subscription te configureren om maximum 1 bericht parallel door te sturen en de subscription te stoppen als er 1 bericht faalt. Afhankelijk van de throughput van de subscriber kan dit al snel een bottleneck worden. De EventHandler past het principe van "best effort" naar volgorde toe. Dit wil zeggen dat er onder uitzonderlijke omstandigheden (failover) 2 berichten tegelijk gestuurd kunnen worden en de volgorde dus verloren gaat.
 
 Een andere optie is om in het bericht zelf een "sequenceId" of "timeStamp" te voorzien en alle berichten in een queue/tabel van de subscriber te persisteren. Daarna kan er dan een ander proces de berichten sorteren en verwerken.
 
-## Retries strategies
+## Retry strategieën
 
 ### First level: Success
 ![](img/retry_strategies_fl_success.png)
 
-```json
 
-```
 
 ### First level: Delete
 ![](img/retry_strategies_fl_delete.png)
