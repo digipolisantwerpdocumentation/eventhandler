@@ -4,7 +4,26 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-
+- [Document historiek](#document-historiek)
+- [Introductie](#introductie)
+- [Links](#links)
+- [Publish](#publish)
+  - [Creatie namespace](#creatie-namespace)
+  - [Creatie topic](#creatie-topic)
+  - [Packages](#packages)
+  - [Omgaan met onbeschikbaarheden](#omgaan-met-onbeschikbaarheden)
+- [Subscribe](#subscribe)
+  - [Creatie subscription](#creatie-subscription)
+    - [Topic subscription](#topic-subscription)
+    - [Wildcard subscription](#wildcard-subscription)
+  - [Volgorde van berichten](#volgorde-van-berichten)
+  - [Retry strategieën](#retry-strategie%C3%ABn)
+    - [First level: Success](#first-level-success)
+    - [First level: Delete](#first-level-delete)
+    - [First level: Error Queue](#first-level-error-queue)
+    - [First level: Stop](#first-level-stop)
+    - [Second level: Success, error, delete](#second-level-success-error-delete)
+- [Voorbeeld](#voorbeeld)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
